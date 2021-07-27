@@ -12,5 +12,5 @@ class Graph():
     def printMST(self, parent):
         print("Edge \t Weight")
         for i in range(1, self.V):
-            print parent[i], "-", i, "\t", self.graph[i][parent[i]]
+            print (parent[i], "-", i, "\t", self.graph[i][parent[i]])
 
