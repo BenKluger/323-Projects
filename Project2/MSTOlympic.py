@@ -1,6 +1,8 @@
 import sys # for INT_MAX
 print("hello minimum spanning tree")
-
+# program for Prim's Minimum Spanning Tree (MST) algorithm
+# program is for adjacency matrix representation of the graph
+# geeksforgeeks.org/prims-minimum-spanning-tree-mst-greedy-algo-5/
 class Graph():
 
     def __init__(self, vertices):
