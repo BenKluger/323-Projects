@@ -1,33 +1,21 @@
-f = open("graph.txt", 'r')
-graph = {}
-n = 0
-for i in f.readlines():
-    nodes = i.split(" ")
-    n1 = int(nodes[0])
-    n2 = int(nodes[1])
-    if n < n1 and n1 > n2:
-        n = n1
-    if n < n2 and n2 > n1:
-        n = n2
-    if n1 not in list(graph):
-        graph[n1] = []
-    adjacencyList = graph[n1]
-    adjacencyList.append(n2)
-    graph[n1] = adjacencyList
+with open('input.txt') as f:
+    # Ignore header
+    f.readline()
 
-adjacencyMatrix = []
-for i in range(1,n+1):
-    row = []
-    for j in range(1,n+1):
-        if i in list(graph) and j in graph[i]:
-            row.append(1)
-        else:
-            row.append(0)
-    adjacencyMatrix.append(row)
+    # Let's consider `line` equals to '2 : 1 2, 3 14, 4 5, 5 4'
+    for line in f:
+        # from_vertex: '2', remaining_line: '1 2, 3 14, 4 5, 5 4'
+        from_vertex, remaining_line = line.strip().split(" : ")
 
-for i in range(n):
-    row = ""
-    for j in range(n):
-        row += str(adjacencyMatrix[i][j])+" "
+        # remaining_tokens: ['1 2', '3 14', '4 5', '5 4']
+        remaining_tokens = remaining_line.split(", ")
 
-    print(row)
+        # remaning_values: [['1', '2'], ['3', '14'], ['4', '5'], ['5', '4']]
+        remaining_values = [value.split(" ") for value in remaining_tokens]
+
+        # to_vertex: '1', weight: '2'
+        # to_vertex: '3', weight: '14'
+        # to_vertex: '4', weight: '5'
+        # to_vertex: '5', weight: '4'
+        for to_vertex, weight in remaining_values:
+            print(from_vertex, to_vertex, weight)
