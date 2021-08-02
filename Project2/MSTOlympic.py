@@ -1,6 +1,7 @@
 import sys # for INT_MAX
 import pandas as pd
 import numpy as np
+#import networkx
 print("hello minimum spanning tree")
 # program for Prim's Minimum Spanning Tree (MST) algorithm
 # program is for adjacency matrix representation of the graph
@@ -39,38 +40,55 @@ class Graph():
                     parent[v] = u
 
 
-def insert(adj, u, v):
-    adj[u].append(v)
-    return
+#def insert(adj, u, v):
+#    adj[u].append(v)
+#    return
+#
+#def printList(adj, V):
+#    for i in range(V):
+#        print(i, end = '')
+#        for j in adj[i]:
+#            print(' -->' + srt(j), end = '')
+#        
+#        print()
+#    print()
+#
+#def convert(adj, V):
+#    matrix = [[0 for j in range(v)]
+#                 for i in range(V)]
+#
+#    for i in range(V):
+#        for j in adj[i]:
+#            matrix[i][j] = 1
+#    
+#    return matrix
+#
+#def printMatrix(adj, V):
+#    for i in range(V):
+#        for j in range(V):
+#            print(adj[i][j], end = ' ')
+#
+#        print()
+#    
+#    print()
 
-def printList(adj, V):
-    for i in range(V):
-        print(i, end = '')
-        for j in adj[i]:
-            print(' -->' + srt(j), end = '')
-        
-        print()
-    print()
-
-def convert(adj, V):
-    matrix = [[0 for j in range(v)]
-                 for i in range(V)]
-
-    for i in range(V):
-        for j in adj[i]:
-            matrix[i][j] = 1
-    
-    return matrix
-
-def printMatrix(adj, V):
-    for i in range(V):
-        for j in range(V):
-            print(adj[i][j], end = ' ')
-
-        print()
-    
-    print()
-
-df = pd.read_csv('input.txt')
+df = pd.read_csv('input2Test.txt')
 print(df)
 print(df.info())
+print(df.columns)
+
+file = open('input2Test.txt', 'r')
+lines = file.readlines()
+
+count = 0
+
+for line in lines:
+    print(line)
+    print("next")
+    count += 1
+
+print(count)
+
+primGraph = Graph(5)
+
+print(primGraph.graph)
