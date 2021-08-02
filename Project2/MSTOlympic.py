@@ -101,6 +101,7 @@ for i in primGraph.graph:
     for j in i:
         print(j, 'hello')
 
+primGraph.graph = myMatrix
 print(primGraph.graph)
 
 
