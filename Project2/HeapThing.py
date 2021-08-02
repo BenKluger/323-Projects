@@ -1,11 +1,18 @@
 def makeAdjacencyMatrix(fileName):
 
+    INF = float('inf')
+
+
     vertices = 0
     with open(fileName) as f:
         for line in f: 
-            vertices += 1
+            vertices += 1 #this tells you how many vertices you have
 
-    graph = [vertices][vertices]
+    rows, cols = (vertices, vertices)
+    graph = [[INF for i in range(cols)] for j in range(rows)]
+    print(graph)
+
+    #graph = [vertices][vertices] 
     with open(fileName) as f:
         ## Ignore header
         #f.readline()
@@ -38,5 +45,6 @@ def makeAdjacencyMatrix(fileName):
                     print("FromV or ToV is out of range", fromV, toV)
                     exit                    
                 graph[int(from_vertex)][int(to_vertex)] = weight
+    print(graph)
 
-matrix = makeAdjacencyMatrix()
+matrix = makeAdjacencyMatrix('real_input.txt')
