@@ -70,3 +70,7 @@ def printMatrix(adj, V):
         print()
     
     print()
+
+df = pd.read_csv('input.txt')
+print(df)
+print(df.info())
