@@ -145,7 +145,7 @@ class Graph():
                     parent[v] = u
         self.printMST(parent)
 
-
+print("\nThis is Prim's algorithm section\n")
 matrixTwo = makeAdjacencyMatrix('real_input.txt')
 print(matrixTwo)
 someGraph = Graph(9)
