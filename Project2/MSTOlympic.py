@@ -1,4 +1,6 @@
 import sys # for INT_MAX
+import pandas as pd
+import numpy as np
 print("hello minimum spanning tree")
 # program for Prim's Minimum Spanning Tree (MST) algorithm
 # program is for adjacency matrix representation of the graph
@@ -37,3 +39,34 @@ class Graph():
                     parent[v] = u
 
 
+def insert(adj, u, v):
+    adj[u].append(v)
+    return
+
+def printList(adj, V):
+    for i in range(V):
+        print(i, end = '')
+        for j in adj[i]:
+            print(' -->' + srt(j), end = '')
+        
+        print()
+    print()
+
+def convert(adj, V):
+    matrix = [[0 for j in range(v)]
+                 for i in range(V)]
+
+    for i in range(V):
+        for j in adj[i]:
+            matrix[i][j] = 1
+    
+    return matrix
+
+def printMatrix(adj, V):
+    for i in range(V):
+        for j in range(V):
+            print(adj[i][j], end = ' ')
+
+        print()
+    
+    print()
