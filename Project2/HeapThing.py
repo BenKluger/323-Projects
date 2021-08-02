@@ -1,3 +1,4 @@
+import sys
 def makeAdjacencyMatrix(fileName):
 
     #INF = float('inf')
@@ -122,14 +123,14 @@ class Graph():
             print (parent[i], "-", i, "\t", self.graph[i][parent[i]])
     
     def minKey(self, key, mstSet):
-        min = sys.maxint
+        min = sys.maxsize
         for v in range(self.V):
             if key[v] < min and mstSet[v] == False:
                 min_index = v
         return min_index
 
     def primMST(self):
-        key = [sys.maxint] * self.V
+        key = [sys.maxsize] * self.V
         parent = [None] * self.V
         key[0] = 0
         mstSet = [False] * self.V
@@ -142,6 +143,11 @@ class Graph():
                 if self.graph[u][v] > 0 and mstSet[v] == False and key[v] > self.graph[u][v]:
                     key[v] = self.graph[u][v]
                     parent[v] = u
+        self.printMST(parent)
 
 
-
+matrixTwo = makeAdjacencyMatrix('real_input.txt')
+print(matrixTwo)
+someGraph = Graph(9)
+someGraph.graph = matrixTwo
+someGraph.primMST()
