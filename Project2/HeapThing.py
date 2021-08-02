@@ -126,6 +126,7 @@ class Graph():
         min = sys.maxsize
         for v in range(self.V):
             if key[v] < min and mstSet[v] == False:
+                min = key[v]
                 min_index = v
         return min_index
 
