@@ -81,14 +81,27 @@ file = open('input2Test.txt', 'r')
 lines = file.readlines()
 
 count = 0
-
+myMatrix = []
 for line in lines:
+    myMatrix.insert(count, [0,2,0,1,0])
     print(line)
     print("next")
     count += 1
-
+print(myMatrix)
 print(count)
 
-primGraph = Graph(5)
+primGraph = Graph(count)
 
 print(primGraph.graph)
+
+for i in primGraph.graph:
+
+    print(i)
+    print('test')
+    for j in i:
+        print(j, 'hello')
+
+print(primGraph.graph)
+
+
+
