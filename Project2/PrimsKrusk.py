@@ -1,5 +1,20 @@
+#Analysis of Algorithms - CSCI 323
+#Assignment 2
+#Ben Kluger/Andrew Pak (GROUP)
+#Websites used
+#https://www.geeksforgeeks.org/kruskals-algorithm-simple-implementation-for-adjacency-matrix/
+#https://www.geeksforgeeks.org/prims-minimum-spanning-tree-mst-greedy-algo-5/
+#https://stackoverflow.com/questions/68569774/how-do-i-convert-a-txt-file-into-an-adjacency-matrix
+
+
 import sys
 import pandas as pd
+import time as time
+
+global kruskalKount
+kruskalKount = 0
+global primCount
+primCount = 0
 
 
 def howManyVertices(fileName):
@@ -13,7 +28,7 @@ def howManyVertices(fileName):
 def makeAdjacencyMatrix(fileName):
     
 
-    #INF = float('inf'
+    #INF = float('inf')
     
     vertices = 0
     with open(fileName) as f:
@@ -62,10 +77,12 @@ def makeAdjacencyMatrix(fileName):
     return graph
 
 
-kruskalTable = pd.DataFrame(columns=['add edge', 'cost', ' ', '0', '1', '2', '3', '4'])
-print(kruskalTable)
+#kruskalTable = pd.DataFrame(columns=['add edge', 'cost', ' ', '0', '1', '2', '3', '4'])
+#print(kruskalTable)
 
 '''KRUSKALS ALGO SECTION'''
+
+''''''''''''''''''''''''''''''''''''''''''''''''''###########################################################
 
 # Python implementation for Kruskal's
 # algorithm
@@ -86,6 +103,7 @@ def union(i, j):
  
 # Find MST using Kruskal's algorithm
 def kruskalMST(cost):
+    global kruskalKount
     mincost = 0 # Cost of min MST
  
     # Initialize sets of disjoint sets
@@ -101,24 +119,30 @@ def kruskalMST(cost):
         for i in range(V):
             for j in range(V):
                 if find(i) != find(j) and cost[i][j] < min:
+                    kruskalKount += 2
                     min = cost[i][j]
                     a = i
                     b = j
-                    print("\nThis is fromVertex: ", a, "\nThis is toVertex: ", b)
+                    #print("\nThis is fromVertex: ", a, "\nThis is toVertex: ", b)
+                kruskalKount += 2
+                
         union(a, b)
         print('Edge {}:({}, {}) cost:{}'.format(edge_count, a, b, min))
-        combinedEdges = '{',a,',',b,'}'
-        kruskalTable.loc[i]=[a, min, ' ', 0, 1, 2, 3, 4]
+        #combinedEdges = '{',a,',',b,'}'
+        #kruskalTable.loc[i]=[a, min, ' ', 0, 1, 2, 3, 4]
 
         edge_count += 1
         mincost += min
  
     print("Minimum cost= {}".format(mincost))
 
-print(kruskalTable)
+#print(kruskalTable)
 
 
 
+''''''''''''''''''''''''''''''''''''''''''''''''''###########################################################
+
+'''PRIMS ALGO SECTION'''
 # Prim's Algorithm
 class Graph():
  
@@ -151,6 +175,7 @@ class Graph():
     # Function to construct and print MST for a graph
     # represented using adjacency matrix representation
     def primMST(self):
+        global primCount
  
         # Key values used to pick minimum weight edge in cut
         key = [sys.maxsize] * self.V
@@ -184,6 +209,8 @@ class Graph():
                 if self.graph[u][v] > 0 and mstSet[v] == False and key[v] > self.graph[u][v]:
                         key[v] = self.graph[u][v]
                         parent[v] = u
+                        primCount += 3
+                primCount += 3
  
         self.printMST(parent)
 
@@ -192,16 +219,32 @@ theFileName = 'input.txt'
 
 vertexCount = howManyVertices(theFileName)
 
+
+howLongItTakes = 0
+
 '''DRIVER CODE FOR KRUSKALS'''
 print("\nThis is Kruskal's Algorithm section\n")
 V = vertexCount
 parent = [i for i in range(V)]
 INF = float('inf')
+
 matrix = makeAdjacencyMatrix(theFileName)
 
-# Print the solution
-kruskalMST(matrix)
 
+
+for x in range(0,10):
+    # Print the solution and time it
+    startTime = time.time()
+    kruskalMST(matrix)
+    #print("\n\nEnd time for Kruskal's: ",(time.time() - startTime)*1000)
+    howLongItTakes += time.time() - startTime
+    
+print("\n\n Average time for Kruskal's: ", howLongItTakes/10 *1000, "ms")
+print("\n\n Comparisons for Kruskal's: ", kruskalKount/10)
+
+howLongItTakes = 0
+
+print('\n\n\n\n')
 
 '''DRIVER CODE FOR PRIMS'''
 '''Prim's Algo driver code section'''
@@ -210,4 +253,14 @@ matrixTwo = makeAdjacencyMatrix(theFileName)
 #print(matrixTwo)
 someGraph = Graph(vertexCount)
 someGraph.graph = matrixTwo
-someGraph.primMST()
+
+
+for x in range(0,10):
+    #Start the timer for Prim's
+    startTime = time.time()
+    someGraph.primMST()
+    #print("\n\nEnd time for Prim's: ",(time.time() - startTime)*1000)
+    howLongItTakes += time.time() - startTime
+
+print("\n\n Average time for Prim's: ", howLongItTakes/10 *1000, "ms")
+print("\n\n Comparisons for Prim's: ",primCount/10)
