@@ -1,4 +1,6 @@
 import sys
+import pandas as pd
+
 
 def howManyVertices(fileName):
     amountOfV = 0
@@ -11,8 +13,7 @@ def howManyVertices(fileName):
 def makeAdjacencyMatrix(fileName):
     
 
-    #INF = float('inf')
-
+    #INF = float('inf'
     
     vertices = 0
     with open(fileName) as f:
@@ -61,7 +62,8 @@ def makeAdjacencyMatrix(fileName):
     return graph
 
 
-
+kruskalTable = pd.DataFrame(columns=['add edge', 'cost', ' ', '0', '1', '2', '3', '4'])
+print(kruskalTable)
 
 '''KRUSKALS ALGO SECTION'''
 
@@ -102,12 +104,18 @@ def kruskalMST(cost):
                     min = cost[i][j]
                     a = i
                     b = j
+                    print("\nThis is fromVertex: ", a, "\nThis is toVertex: ", b)
         union(a, b)
         print('Edge {}:({}, {}) cost:{}'.format(edge_count, a, b, min))
+        combinedEdges = '{',a,',',b,'}'
+        kruskalTable.loc[i]=[a, min, ' ', 0, 1, 2, 3, 4]
+
         edge_count += 1
         mincost += min
  
     print("Minimum cost= {}".format(mincost))
+
+print(kruskalTable)
 
 
 
@@ -179,15 +187,17 @@ class Graph():
  
         self.printMST(parent)
 
+theFileName = 'input.txt'
 
-vertexCount = howManyVertices('real_input.txt')
+
+vertexCount = howManyVertices(theFileName)
 
 '''DRIVER CODE FOR KRUSKALS'''
 print("\nThis is Kruskal's Algorithm section\n")
 V = vertexCount
 parent = [i for i in range(V)]
 INF = float('inf')
-matrix = makeAdjacencyMatrix('real_input.txt')
+matrix = makeAdjacencyMatrix(theFileName)
 
 # Print the solution
 kruskalMST(matrix)
@@ -196,7 +206,7 @@ kruskalMST(matrix)
 '''DRIVER CODE FOR PRIMS'''
 '''Prim's Algo driver code section'''
 print("\nThis is Prim's algorithm section\n")
-matrixTwo = makeAdjacencyMatrix('real_input.txt')
+matrixTwo = makeAdjacencyMatrix(theFileName)
 #print(matrixTwo)
 someGraph = Graph(vertexCount)
 someGraph.graph = matrixTwo
