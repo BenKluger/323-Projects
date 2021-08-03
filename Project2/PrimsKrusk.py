@@ -77,8 +77,8 @@ def makeAdjacencyMatrix(fileName):
     return graph
 
 
-#kruskalTable = pd.DataFrame(columns=['add edge', 'cost', ' ', '0', '1', '2', '3', '4'])
-#print(kruskalTable)
+kruskalTable = pd.DataFrame(columns=['add edge', 'cost', ' ', '0', '1', '2', '3', '4'])
+print(kruskalTable)
 
 '''KRUSKALS ALGO SECTION'''
 
@@ -102,7 +102,7 @@ def union(i, j):
     parent[a] = b
  
 # Find MST using Kruskal's algorithm
-def kruskalMST(cost):
+def kruskalMST(cost, verbose):
     global kruskalKount
     mincost = 0 # Cost of min MST
  
@@ -119,22 +119,23 @@ def kruskalMST(cost):
         for i in range(V):
             for j in range(V):
                 if find(i) != find(j) and cost[i][j] < min:
-                    kruskalKount += 2
                     min = cost[i][j]
                     a = i
                     b = j
-                    #print("\nThis is fromVertex: ", a, "\nThis is toVertex: ", b)
+                    if verbose:
+                        print("\nThis is fromVertex: ", a, "\nThis is toVertex: ", b)
                 kruskalKount += 2
                 
         union(a, b)
-        print('Edge {}:({}, {}) cost:{}'.format(edge_count, a, b, min))
+        if verbose:
+            print('Added edge {}:({}, {}) cost:{}'.format(edge_count, a, b, min))
         #combinedEdges = '{',a,',',b,'}'
         #kruskalTable.loc[i]=[a, min, ' ', 0, 1, 2, 3, 4]
 
         edge_count += 1
         mincost += min
- 
-    print("Minimum cost= {}".format(mincost))
+    if verbose:
+        print("Minimum cost= {}".format(mincost))
 
 #print(kruskalTable)
 
@@ -152,10 +153,11 @@ class Graph():
                     for row in range(vertices)]
  
     # A utility function to print the constructed MST stored in parent[]
-    def printMST(self, parent):
-        print ("Edge \tWeight")
-        for i in range(1, self.V):
-            print (parent[i], "-", i, "\t", self.graph[i][ parent[i]])
+    def printMST(self, parent, verbose):
+        if verbose:
+            print ("Edge \tWeight")
+            for i in range(1, self.V):
+                print (parent[i], "-", i, "\t", self.graph[i][ parent[i]])
  
     # A utility function to find the vertex with
     # minimum distance value, from the set of vertices
@@ -174,7 +176,7 @@ class Graph():
  
     # Function to construct and print MST for a graph
     # represented using adjacency matrix representation
-    def primMST(self):
+    def primMST(self, verbose):
         global primCount
  
         # Key values used to pick minimum weight edge in cut
@@ -209,10 +211,10 @@ class Graph():
                 if self.graph[u][v] > 0 and mstSet[v] == False and key[v] > self.graph[u][v]:
                         key[v] = self.graph[u][v]
                         parent[v] = u
-                        primCount += 3
-                primCount += 3
+                primCount += 3        
+                
  
-        self.printMST(parent)
+        self.printMST(parent, verbose)
 
 theFileName = 'input.txt'
 
@@ -221,6 +223,9 @@ vertexCount = howManyVertices(theFileName)
 
 
 howLongItTakes = 0
+
+#HOW MANY TRIALS ARE WE DOING? DON'T HARDCODE
+nTrials = 15
 
 '''DRIVER CODE FOR KRUSKALS'''
 print("\nThis is Kruskal's Algorithm section\n")
@@ -232,15 +237,15 @@ matrix = makeAdjacencyMatrix(theFileName)
 
 
 
-for x in range(0,10):
+for x in range(0,nTrials):
     # Print the solution and time it
     startTime = time.time()
-    kruskalMST(matrix)
+    kruskalMST(matrix, x==0)
     #print("\n\nEnd time for Kruskal's: ",(time.time() - startTime)*1000)
     howLongItTakes += time.time() - startTime
     
-print("\n\n Average time for Kruskal's: ", howLongItTakes/10 *1000, "ms")
-print("\n\n Comparisons for Kruskal's: ", kruskalKount/10)
+print("\n\n Average time for", nTrials, "trials of Kruskal's Algorithm: ", howLongItTakes/nTrials *1000, "ms")
+print("\n\n Comparisons for Kruskal's: ", kruskalKount/nTrials)
 
 howLongItTakes = 0
 
@@ -255,12 +260,13 @@ someGraph = Graph(vertexCount)
 someGraph.graph = matrixTwo
 
 
-for x in range(0,10):
+for x in range(0,nTrials):
     #Start the timer for Prim's
     startTime = time.time()
-    someGraph.primMST()
+    someGraph.primMST(x==0)
     #print("\n\nEnd time for Prim's: ",(time.time() - startTime)*1000)
     howLongItTakes += time.time() - startTime
+    
 
-print("\n\n Average time for Prim's: ", howLongItTakes/10 *1000, "ms")
-print("\n\n Comparisons for Prim's: ",primCount/10)
+print("\n\n Average time for", nTrials, "trials of Prims's Algorithm: ", howLongItTakes/nTrials *1000, "ms")
+print("\n\n Comparisons for Prim's: ",primCount/nTrials)
