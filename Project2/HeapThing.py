@@ -1,9 +1,19 @@
 import sys
+
+def howManyVertices(fileName):
+    amountOfV = 0
+    with open(fileName) as f:
+        for line in f: 
+            amountOfV += 1
+    return amountOfV
+
+
 def makeAdjacencyMatrix(fileName):
+    
 
     #INF = float('inf')
 
-
+    
     vertices = 0
     with open(fileName) as f:
         for line in f: 
@@ -52,7 +62,7 @@ def makeAdjacencyMatrix(fileName):
 
 
 
-print("\nThis is Kruskal's Algorithm section\n")
+
 '''KRUSKALS ALGO SECTION'''
 
 # Python implementation for Kruskal's
@@ -100,15 +110,6 @@ def kruskalMST(cost):
     print("Minimum cost= {}".format(mincost))
 
 
-'''DRIVER CODE FOR KRUSKALS'''
-V = 5
-parent = [i for i in range(V)]
-INF = float('inf')
-matrix = makeAdjacencyMatrix('real_input.txt')
-
- 
-# Print the solution
-kruskalMST(matrix)
 
 # Prim's Algorithm
 class Graph():
@@ -146,9 +147,25 @@ class Graph():
                     parent[v] = u
         self.printMST(parent)
 
+
+vertexCount = howManyVertices('real_input.txt')
+
+'''DRIVER CODE FOR KRUSKALS'''
+print("\nThis is Kruskal's Algorithm section\n")
+V = vertexCount
+parent = [i for i in range(V)]
+INF = float('inf')
+matrix = makeAdjacencyMatrix('real_input.txt')
+
+# Print the solution
+kruskalMST(matrix)
+
+
+'''DRIVER CODE FOR PRIMS'''
+'''Prim's Algo driver code section'''
 print("\nThis is Prim's algorithm section\n")
 matrixTwo = makeAdjacencyMatrix('real_input.txt')
-print(matrixTwo)
-someGraph = Graph(9)
+#print(matrixTwo)
+someGraph = Graph(vertexCount)
 someGraph.graph = matrixTwo
 someGraph.primMST()
