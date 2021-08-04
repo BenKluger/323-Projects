@@ -8,8 +8,13 @@
 
 
 import sys
-import pandas as pd
 import time as time
+
+'''
+#import pandas as pd
+#kruskalTable = pd.DataFrame(columns=['add edge', 'cost', ' ', '0', '1', '2', '3', '4'])
+#print(kruskalTable)
+'''
 
 global kruskalKount
 kruskalKount = 0
@@ -77,8 +82,7 @@ def makeAdjacencyMatrix(fileName):
     return graph
 
 
-kruskalTable = pd.DataFrame(columns=['add edge', 'cost', ' ', '0', '1', '2', '3', '4'])
-print(kruskalTable)
+
 
 '''KRUSKALS ALGO SECTION'''
 
@@ -162,16 +166,17 @@ class Graph():
     # A utility function to find the vertex with
     # minimum distance value, from the set of vertices
     # not yet included in shortest path tree
-    def minKey(self, key, mstSet):
- 
+    def minKey(self, key, mstSet, verbose):
         # Initialize min value
         min = sys.maxsize
- 
         for v in range(self.V):
+            '''if verbose:
+                print("\nThis is the end vertex: ", v, "\nThis is the minimum vertext weight:", min)'''
             if key[v] < min and mstSet[v] == False:
                 min = key[v]
                 min_index = v
- 
+                #print("\nThis is the end vertex: ", v, "\nThis is the minimum vertext weight:", min)###################################
+            
         return min_index
  
     # Function to construct and print MST for a graph
@@ -189,11 +194,11 @@ class Graph():
         parent[0] = -1 # First node is always the root of
  
         for cout in range(self.V):
- 
+            
             # Pick the minimum distance vertex from
             # the set of vertices not yet processed.
             # u is always equal to src in first iteration
-            u = self.minKey(key, mstSet)
+            u = self.minKey(key, mstSet, verbose)
  
             # Put the minimum distance vertex in
             # the shortest path tree
@@ -204,19 +209,24 @@ class Graph():
             # distance is greater than new distance and
             # the vertex in not in the shotest path tree
             for v in range(self.V):
- 
+                
                 # graph[u][v] is non zero only for adjacent vertices of m
                 # mstSet[v] is false for vertices not yet included in MST
                 # Update the key only if graph[u][v] is smaller than key[v]
+                '''if verbose:
+                    print("From edge", parent[v], "to edge", v, "with a weight of", key[v])
+                    print("mstset", mstSet, "\nmstset v", mstSet[v])'''
                 if self.graph[u][v] > 0 and mstSet[v] == False and key[v] > self.graph[u][v]:
                         key[v] = self.graph[u][v]
                         parent[v] = u
+                        '''if verbose:
+                           print("IT WORKS!!!!!","\nFrom edge", parent[v], "to edge", v, "with a weight of", key[v],"WE DONE\n")'''
                 primCount += 3        
                 
  
         self.printMST(parent, verbose)
 
-theFileName = 'input.txt'
+theFileName = 'real_input.txt'
 
 
 vertexCount = howManyVertices(theFileName)
