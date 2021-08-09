@@ -371,9 +371,9 @@ if __name__ == '__main__':
         print (myTable)
 
     #MATPLOTLIB STUFF FOR FUN,run command "pip install -U matplotlib" if you dont have matplotlib
-    myTable = myTable.sort_values('Comparisons', ascending = True).reset_index(drop=True)
+
     ax = myTable.plot(kind='bar',x='Name of Algo', y='Comparisons',color='red')
     ax2 = ax.twinx()
-    ax2.set_xlabel("Pattern", color="blue", fontsize=14)
+    ax2.set_ylabel("Pattern", color="purple", fontsize=14)
     ax2.plot(myTable['Pattern'], color='purple')
     plt.show()
