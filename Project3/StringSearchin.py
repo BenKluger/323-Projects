@@ -3,6 +3,8 @@
 #Ben Kluger/Andrew Pak (GROUP)
 import pandas as pd
 import time
+import matplotlib
+import matplotlib.pyplot as plt
 global naiveCount
 naiveCount = 0
 global rkCount
@@ -367,3 +369,5 @@ if __name__ == '__main__':
         print("\n\n Comparisons for BM's: ", bmCount/nTrials)
 
         print (myTable)
+    myTable.plot(kind='bar',x='Name of Algo', y='Comparisons',color='red') 
+    plt.show()
