@@ -1,6 +1,18 @@
 #Analysis of Algorithms - CSCI 323
 #Assignment 3
-#Ben Kluger
+#Ben Kluger/Andrew Pak (GROUP)
+
+import time
+
+global naiveCount
+naiveCount = 0
+global rkCount
+rkCount = 0
+global kmpCount
+kmpCount = 0
+global bmCount
+bmCount = 0
+
 
 def readFileToUpper(input):
     with open(input) as f:
@@ -27,6 +39,8 @@ def readFile(fileName):
 # Python3 program for Naive Pattern
 # Searching algorithm
 def naiveSearch(pat, txt):
+    global naiveCount
+
     isItThere = False #Set the control switch to off
     M = len(pat)
     N = len(txt)
@@ -39,12 +53,15 @@ def naiveSearch(pat, txt):
         # for pattern match */
         while(j < M):
             if (txt[i + j] != pat[j]):
+                naiveCount += 1
                 break
+            naiveCount += 1
             j += 1
  
         if (j == M):
             print("Pattern found at index ", i)
             isItThere = True #Turn the control switch on
+        naiveCount += 1
     if not isItThere: #If the index is not there then we print a "-1"
         print("-1")
         
@@ -64,6 +81,7 @@ d = 256
 # q    -> A prime number
 
 def rabinKarpSearch(pat, txt, q):
+    global rkCount
     isItThere = False
     M = len(pat)
     N = len(txt)
@@ -90,16 +108,22 @@ def rabinKarpSearch(pat, txt, q):
         # pattern if the hash values match then only check
         # for characters on by one
         if p==t:
+            rkCount += 1
             # Check for characters one by one
             for j in range(M):
                 if txt[i+j] != pat[j]:
+                    rkCount += 1
                     break
-                else: j+=1
+                else: 
+                    j+=1
+                    rkCount += 1
+
 
             # if p == t and pat[0...M-1] = txt[i, i+1, ...i+M-1]
             if j==M:
                 print("Pattern found at index " + str(i))
                 isItThere = True
+            rkCount += 1
 
         # Calculate hash value for next window of text: Remove
         # leading digit, add trailing digit
@@ -110,6 +134,8 @@ def rabinKarpSearch(pat, txt, q):
             # positive
             if t < 0:
                 t = t+q
+            rkCount += 1
+        rkCount += 1
     if not isItThere:
         print("-1")
 
@@ -118,6 +144,7 @@ def rabinKarpSearch(pat, txt, q):
 '''Knuth-Morris-Pratt ALGO'''
 # Python program for KMP Algorithm
 def KMPSearch(pat, txt):
+    global kmpCount
     isItThere = False
     M = len(pat)
     N = len(txt)
@@ -135,11 +162,13 @@ def KMPSearch(pat, txt):
         if pat[j] == txt[i]:
             i += 1
             j += 1
+        kmpCount += 1    
   
         if j == M:
             print ("Found pattern at index " + str(i-j))
             isItThere = True
             j = lps[j-1]
+            kmpCount += 1
   
         # mismatch after j matches
         elif i < N and pat[j] != txt[i]:
@@ -147,12 +176,16 @@ def KMPSearch(pat, txt):
             # they will match anyway
             if j != 0:
                 j = lps[j-1]
+                kmpCount += 1
             else:
                 i += 1
+                kmpCount += 1
+            kmpCount += 3
     if not isItThere:
         print("-1")
   
 def computeLPSArray(pat, M, lps):
+    global kmpCount
     len = 0 # length of the previous longest prefix suffix
   
     lps[0] # lps[0] is always 0
@@ -161,6 +194,7 @@ def computeLPSArray(pat, M, lps):
     # the loop calculates lps[i] for i = 1 to M-1
     while i < M:
         if pat[i]== pat[len]:
+            kmpCount += 1
             len += 1
             lps[i] = len
             i += 1
@@ -175,6 +209,7 @@ def computeLPSArray(pat, M, lps):
             else:
                 lps[i] = 0
                 i += 1
+            kmpCount += 2
 
 
 '''Boyer-Moore Algo'''
@@ -200,6 +235,7 @@ def badCharHeuristic(string, size):
     return badChar
  
 def BoyerMooreSearch(pat, txt):
+    global bmCount
     isItThere = False
     '''
     A pattern searching function that uses Bad Character
@@ -222,6 +258,7 @@ def BoyerMooreSearch(pat, txt):
         # characters of pattern and text are matching
         # at this shift s
         while j>=0 and pat[j] == txt[s+j]:
+            bmCount += 1
             j -= 1
  
         # If the pattern is present at current shift,
@@ -234,9 +271,9 @@ def BoyerMooreSearch(pat, txt):
                 Shift the pattern so that the next character in text
                       aligns with the last occurrence of it in pattern.
                 The condition s+m < n is necessary for the case when
-                   pattern occurs at the end of text
-               '''
+                   pattern occurs at the end of text               '''
             s += (m-badChar[ord(txt[s+m])] if s+m<n else 1)
+            bmCount += 1
         else:
             '''
                Shift the pattern so that the bad character in text
@@ -247,38 +284,59 @@ def BoyerMooreSearch(pat, txt):
                current character.
             '''
             s += max(1, j-badChar[ord(txt[s+j])])
+        bmCount += 1
     if not isItThere:
         print("-1")
 
+
+
 # Driver Code
+
+nTrials = 1
+
 if __name__ == '__main__':
     txt = readFileToUpper("NoPatternsHere.txt")
     
-    print("This is the Naive section\n")    
-    for index in (readFile("WhatWeAreLookingFor.txt")):   
-        print("\nWe are looking for: ", index)
-        naiveSearch(index, txt)
-
     
-    print("\n\nThis is the Rabin-Karp section\n")
-    q = 101 #hash code prime number
-    for index in (readFile("WhatWeAreLookingFor.txt")):        
-        print("\nWe are looking for: ", index)
-        rabinKarpSearch(index, txt, q)
+    for x in range(0, nTrials):
 
+        howLongItTakes = 0
+        print("This is the Naive section\n")    
+        startTime = time.time()
+        for index in (readFile("WhatWeAreLookingFor.txt")):   
+            print("\nWe are looking for: ", index)
+            naiveSearch(index, txt)
+        howLongItTakes += time.time() - startTime
+        print("\n\n Average time for", nTrials, "trials of Naive Algorithm: ", howLongItTakes/nTrials *1000, "ms")
+        print("\n\n Comparisons for Naive's: ", naiveCount/nTrials)
 
-    print("\n\nThis is the Knuth-Morris-Pratt section\n")
-    for index in (readFile("WhatWeAreLookingFor.txt")):        
-        print("\nWe are looking for: ", index)
-        KMPSearch(index, txt)
+        howLongItTakes = 0
+        print("\n\nThis is the Rabin-Karp section\n")
+        q = 101 #hash code prime number
+        startTime = time.time()
+        for index in (readFile("WhatWeAreLookingFor.txt")):        
+            print("\nWe are looking for: ", index)
+            rabinKarpSearch(index, txt, q)
+        howLongItTakes += time.time() - startTime
+        print("\n\n Average time for", nTrials, "trials of Rabin-Karp's Algorithm: ", howLongItTakes/nTrials *1000, "ms")
+        print("\n\n Comparisons for RK's: ", rkCount/nTrials)
 
+        howLongItTakes = 0
+        print("\n\nThis is the Knuth-Morris-Pratt section\n")
+        startTime = time.time()
+        for index in (readFile("WhatWeAreLookingFor.txt")):        
+            print("\nWe are looking for: ", index)
+            KMPSearch(index, txt)
+        howLongItTakes += time.time() - startTime
+        print("\n\n Average time for", nTrials, "trials of Knuth-Morris-Pratt Algorithm: ", howLongItTakes/nTrials *1000, "ms")
+        print("\n\n Comparisons for KMP's: ", kmpCount/nTrials)
 
-    print("\n\nThis is the Boyer-Moore section\n")
-    for index in (readFile("WhatWeAreLookingFor.txt")):        
-        print("\nWe are looking for: ", index)
-        BoyerMooreSearch(index, txt)
-
-
-# A prime number
-
-
+        howLongItTakes = 0
+        print("\n\nThis is the Boyer-Moore section\n")
+        startTime = time.time()
+        for index in (readFile("WhatWeAreLookingFor.txt")):        
+            print("\nWe are looking for: ", index)
+            BoyerMooreSearch(index, txt)
+        howLongItTakes += time.time() - startTime
+        print("\n\n Average time for", nTrials, "trials of Boyer-Moore Algorithm: ", howLongItTakes/nTrials *1000, "ms")
+        print("\n\n Comparisons for BM's: ", bmCount/nTrials)
