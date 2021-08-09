@@ -41,6 +41,7 @@ def readFile(fileName):
 def naiveSearch(pat, txt):
     global naiveCount
     global indexStarter
+    indexStarter = []
     isItThere = False #Set the control switch to off
     M = len(pat)
     N = len(txt)
@@ -61,7 +62,7 @@ def naiveSearch(pat, txt):
         if (j == M):
             print("Pattern found at index ", i)
             isItThere = True #Turn the control switch on
-            indexStarter = i
+            indexStarter.append(i)
         naiveCount += 1
     if not isItThere: #If the index is not there then we print a "-1"
         print("-1")
@@ -84,6 +85,7 @@ d = 256
 def rabinKarpSearch(pat, txt, q):
     global rkCount
     global indexStarter
+    indexStarter = []
     isItThere = False
     M = len(pat)
     N = len(txt)
@@ -125,7 +127,7 @@ def rabinKarpSearch(pat, txt, q):
             if j==M:
                 print("Pattern found at index " + str(i))
                 isItThere = True
-                indexStarter = i
+                indexStarter.append(i)
             rkCount += 1
 
         # Calculate hash value for next window of text: Remove
@@ -149,6 +151,7 @@ def rabinKarpSearch(pat, txt, q):
 def KMPSearch(pat, txt):
     global kmpCount
     global indexStarter
+    indexStarter = []
     isItThere = False
     M = len(pat)
     N = len(txt)
@@ -170,7 +173,7 @@ def KMPSearch(pat, txt):
   
         if j == M:
             print ("Found pattern at index " + str(i-j))
-            indexStarter = i-j
+            indexStarter.append(i-j)
             isItThere = True
             j = lps[j-1]
             kmpCount += 1
@@ -243,6 +246,7 @@ def badCharHeuristic(string, size):
 def BoyerMooreSearch(pat, txt):
     global bmCount
     global indexStarter
+    indexStarter = []
     isItThere = False
     '''
     A pattern searching function that uses Bad Character
@@ -273,7 +277,7 @@ def BoyerMooreSearch(pat, txt):
         if j<0:
             print("Pattern occur at shift = {}".format(s))
             isItThere = True
-            indexStarter = format(s)
+            indexStarter.append(format(s))
             '''   
                 Shift the pattern so that the next character in text
                       aligns with the last occurrence of it in pattern.
