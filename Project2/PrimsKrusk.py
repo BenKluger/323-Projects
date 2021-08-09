@@ -226,7 +226,7 @@ class Graph():
  
         self.printMST(parent, verbose)
 
-theFileName = 'inputForPeerReview.txt'
+theFileName = 'real_input.txt'
 
 
 vertexCount = howManyVertices(theFileName)
