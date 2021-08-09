@@ -3,7 +3,6 @@
 #Ben Kluger/Andrew Pak (GROUP)
 import pandas as pd
 import time
-
 global naiveCount
 naiveCount = 0
 global rkCount
@@ -12,6 +11,7 @@ global kmpCount
 kmpCount = 0
 global bmCount
 bmCount = 0
+myTable = pd.DataFrame(columns=['Name of Algo', 'Pattern', 'Index Start', 'Avg run time (in ms)', 'Comparisons'])
 
 
 def readFileToUpper(input):
@@ -40,7 +40,7 @@ def readFile(fileName):
 # Searching algorithm
 def naiveSearch(pat, txt):
     global naiveCount
-
+    global indexStarter
     isItThere = False #Set the control switch to off
     M = len(pat)
     N = len(txt)
@@ -61,6 +61,7 @@ def naiveSearch(pat, txt):
         if (j == M):
             print("Pattern found at index ", i)
             isItThere = True #Turn the control switch on
+            indexStarter = i
         naiveCount += 1
     if not isItThere: #If the index is not there then we print a "-1"
         print("-1")
@@ -82,6 +83,7 @@ d = 256
 
 def rabinKarpSearch(pat, txt, q):
     global rkCount
+    global indexStarter
     isItThere = False
     M = len(pat)
     N = len(txt)
@@ -123,6 +125,7 @@ def rabinKarpSearch(pat, txt, q):
             if j==M:
                 print("Pattern found at index " + str(i))
                 isItThere = True
+                indexStarter = i
             rkCount += 1
 
         # Calculate hash value for next window of text: Remove
@@ -145,6 +148,7 @@ def rabinKarpSearch(pat, txt, q):
 # Python program for KMP Algorithm
 def KMPSearch(pat, txt):
     global kmpCount
+    global indexStarter
     isItThere = False
     M = len(pat)
     N = len(txt)
@@ -166,9 +170,11 @@ def KMPSearch(pat, txt):
   
         if j == M:
             print ("Found pattern at index " + str(i-j))
+            indexStarter = i-j
             isItThere = True
             j = lps[j-1]
             kmpCount += 1
+
   
         # mismatch after j matches
         elif i < N and pat[j] != txt[i]:
@@ -236,6 +242,7 @@ def badCharHeuristic(string, size):
  
 def BoyerMooreSearch(pat, txt):
     global bmCount
+    global indexStarter
     isItThere = False
     '''
     A pattern searching function that uses Bad Character
@@ -266,7 +273,7 @@ def BoyerMooreSearch(pat, txt):
         if j<0:
             print("Pattern occur at shift = {}".format(s))
             isItThere = True
- 
+            indexStarter = format(s)
             '''   
                 Shift the pattern so that the next character in text
                       aligns with the last occurrence of it in pattern.
@@ -295,21 +302,19 @@ def BoyerMooreSearch(pat, txt):
 nTrials = 1
 
 if __name__ == '__main__':
-    myTable = pd.DataFrame(columns=['Name of Algo', 'Pattern', 'Index Start', 'Avg run time (in ms)', 'Comparisons'])
-    txt = readFileToUpper("NoPatternsHere.txt")
-    
+   # myTable = pd.DataFrame(columns=['Name of Algo', 'Pattern', 'Index Start', 'Avg run time (in ms)', 'Comparisons'])
+    txt = readFileToUpper("input1.txt") 
     rowCounter = 0
     for x in range(0, nTrials):
 
         howLongItTakes = 0
         print("This is the Naive section\n")    
-        for index in (readFile("WhatWeAreLookingFor.txt")): 
-              
+        for index in (readFile("WhatWeAreLookingFor.txt")):   
             print("\nWe are looking for: ", index)
             startTime = time.time()
             naiveSearch(index, txt)
             howLongItTakes += time.time() - startTime
-            myTable.loc[rowCounter] = ['Naive', index, 0, howLongItTakes*1000, naiveCount]
+            myTable.loc[rowCounter] = ['Naive', index, indexStarter, howLongItTakes*1000, naiveCount]
             rowCounter += 1
             
         
@@ -326,7 +331,7 @@ if __name__ == '__main__':
             startTime = time.time()
             rabinKarpSearch(index, txt, q)
             howLongItTakes += time.time() - startTime
-            myTable.loc[rowCounter] = ['Rabin-Karp', index, 0, howLongItTakes*1000, rkCount]
+            myTable.loc[rowCounter] = ['Rabin-Karp', index, indexStarter, howLongItTakes*1000, rkCount]
             rowCounter += 1
         print("\n\n Average time for", nTrials, "trials of Rabin-Karp's Algorithm: ", howLongItTakes/nTrials *1000, "ms")
         print("\n\n Comparisons for RK's: ", rkCount/nTrials)
@@ -339,7 +344,7 @@ if __name__ == '__main__':
             startTime = time.time()
             KMPSearch(index, txt)
             howLongItTakes += time.time() - startTime
-            myTable.loc[rowCounter] = ['Knuth-Morris-Pratt', index, 0, howLongItTakes*1000, kmpCount]
+            myTable.loc[rowCounter] = ['Knuth-Morris-Pratt',index, indexStarter,howLongItTakes*1000, kmpCount]
             rowCounter += 1
         print("\n\n Average time for", nTrials, "trials of Knuth-Morris-Pratt Algorithm: ", howLongItTakes/nTrials *1000, "ms")
         print("\n\n Comparisons for KMP's: ", kmpCount/nTrials)
@@ -352,7 +357,7 @@ if __name__ == '__main__':
             startTime = time.time()
             BoyerMooreSearch(index, txt)
             howLongItTakes += time.time() - startTime
-            myTable.loc[rowCounter] = ['Boyer-Moore', index, 0, howLongItTakes*1000, bmCount]
+            myTable.loc[rowCounter] = ['Boyer-Moore', index, indexStarter, howLongItTakes*1000, bmCount]
             rowCounter += 1
         print("\n\n Average time for", nTrials, "trials of Boyer-Moore Algorithm: ", howLongItTakes/nTrials *1000, "ms")
         print("\n\n Comparisons for BM's: ", bmCount/nTrials)
