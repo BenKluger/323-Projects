@@ -1,7 +1,7 @@
 #Analysis of Algorithms - CSCI 323
 #Assignment 3
 #Ben Kluger/Andrew Pak (GROUP)
-
+import pandas as pd
 import time
 
 global naiveCount
@@ -295,48 +295,66 @@ def BoyerMooreSearch(pat, txt):
 nTrials = 1
 
 if __name__ == '__main__':
+    myTable = pd.DataFrame(columns=['Name of Algo', 'Pattern', 'Index Start', 'Avg run time (in ms)', 'Comparisons'])
     txt = readFileToUpper("NoPatternsHere.txt")
     
-    
+    rowCounter = 0
     for x in range(0, nTrials):
 
         howLongItTakes = 0
         print("This is the Naive section\n")    
-        startTime = time.time()
-        for index in (readFile("WhatWeAreLookingFor.txt")):   
+        for index in (readFile("WhatWeAreLookingFor.txt")): 
+              
             print("\nWe are looking for: ", index)
+            startTime = time.time()
             naiveSearch(index, txt)
-        howLongItTakes += time.time() - startTime
+            howLongItTakes += time.time() - startTime
+            myTable.loc[rowCounter] = ['Naive', index, 0, howLongItTakes*1000, naiveCount]
+            rowCounter += 1
+            
+        
         print("\n\n Average time for", nTrials, "trials of Naive Algorithm: ", howLongItTakes/nTrials *1000, "ms")
         print("\n\n Comparisons for Naive's: ", naiveCount/nTrials)
+        
+
 
         howLongItTakes = 0
         print("\n\nThis is the Rabin-Karp section\n")
         q = 101 #hash code prime number
-        startTime = time.time()
         for index in (readFile("WhatWeAreLookingFor.txt")):        
             print("\nWe are looking for: ", index)
+            startTime = time.time()
             rabinKarpSearch(index, txt, q)
-        howLongItTakes += time.time() - startTime
+            howLongItTakes += time.time() - startTime
+            myTable.loc[rowCounter] = ['Rabin-Karp', index, 0, howLongItTakes*1000, rkCount]
+            rowCounter += 1
         print("\n\n Average time for", nTrials, "trials of Rabin-Karp's Algorithm: ", howLongItTakes/nTrials *1000, "ms")
         print("\n\n Comparisons for RK's: ", rkCount/nTrials)
 
         howLongItTakes = 0
         print("\n\nThis is the Knuth-Morris-Pratt section\n")
-        startTime = time.time()
+        
         for index in (readFile("WhatWeAreLookingFor.txt")):        
             print("\nWe are looking for: ", index)
+            startTime = time.time()
             KMPSearch(index, txt)
-        howLongItTakes += time.time() - startTime
+            howLongItTakes += time.time() - startTime
+            myTable.loc[rowCounter] = ['Knuth-Morris-Pratt', index, 0, howLongItTakes*1000, kmpCount]
+            rowCounter += 1
         print("\n\n Average time for", nTrials, "trials of Knuth-Morris-Pratt Algorithm: ", howLongItTakes/nTrials *1000, "ms")
         print("\n\n Comparisons for KMP's: ", kmpCount/nTrials)
 
         howLongItTakes = 0
         print("\n\nThis is the Boyer-Moore section\n")
-        startTime = time.time()
+        
         for index in (readFile("WhatWeAreLookingFor.txt")):        
             print("\nWe are looking for: ", index)
+            startTime = time.time()
             BoyerMooreSearch(index, txt)
-        howLongItTakes += time.time() - startTime
+            howLongItTakes += time.time() - startTime
+            myTable.loc[rowCounter] = ['Boyer-Moore', index, 0, howLongItTakes*1000, bmCount]
+            rowCounter += 1
         print("\n\n Average time for", nTrials, "trials of Boyer-Moore Algorithm: ", howLongItTakes/nTrials *1000, "ms")
         print("\n\n Comparisons for BM's: ", bmCount/nTrials)
+
+        print (myTable)
