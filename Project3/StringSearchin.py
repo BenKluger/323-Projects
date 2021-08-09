@@ -369,5 +369,7 @@ if __name__ == '__main__':
         print("\n\n Comparisons for BM's: ", bmCount/nTrials)
 
         print (myTable)
+    myTable = myTable.sort_values('Comparisons', ascending = True).reset_index(drop=True)
     myTable.plot(kind='bar',x='Name of Algo', y='Comparisons',color='red') 
+
     plt.show()
