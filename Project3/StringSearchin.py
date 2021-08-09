@@ -45,6 +45,8 @@ def search(pat, txt):
             print("Pattern found at index ", i)
             continue
 
+
+"RABIN KARP METHOD"
 # RABIN KARP SECTION
 
 # Following program is the python implementation of
@@ -114,5 +116,3 @@ print("\n this is the Rabin-Karp section\n")
 # A prime number
 
 q = 101
-
-
