@@ -1,6 +1,16 @@
 #Analysis of Algorithms - CSCI 323
 #Assignment 3
-#Ben Kluger/Andrew Pak (GROUP)
+#Ben Kluger/Andrew Pak/Tania Chowdhury (GROUP)
+#WEBSITES USED
+'''
+https://www.geeksforgeeks.org/naive-algorithm-for-pattern-searching/
+https://www.geeksforgeeks.org/rabin-karp-algorithm-for-pattern-searching/
+https://www.geeksforgeeks.org/kmp-algorithm-for-pattern-searching/
+https://www.geeksforgeeks.org/boyer-moore-algorithm-for-pattern-searching/
+https://www.geeksforgeeks.org/boyer-moore-algorithm-for-pattern-searching/
+'''
+
+import numpy as np
 import pandas as pd
 import time
 import matplotlib
@@ -56,14 +66,16 @@ def naiveSearch(pat, txt):
         # for pattern match */
         while(j < M):
             if (txt[i + j] != pat[j]):
-                naiveCount += 1
+                naiveCount += 1   
+                ########################print("The index is:",i+j, ". The next character is:\'", txt[i+j], "\'")#######################        
                 break
             naiveCount += 1
             j += 1
  
         if (j == M):
-            print("Pattern found at index ", i)
+            #print("Pattern found at index ", i)
             isItThere = True #Turn the control switch on
+            print("The index is:",i+j, ". The next character is: \'", txt[i+j], "\' We have found a match.")
             indexStarter.append(i)
         naiveCount += 1
     if not isItThere: #If the index is not there then we print a "-1"
@@ -119,6 +131,7 @@ def rabinKarpSearch(pat, txt, q):
             for j in range(M):
                 if txt[i+j] != pat[j]:
                     rkCount += 1
+                    #####################print("The index is:",i+j, ". The next character is: \'", txt[i+j], "\' We have found a match.")####################
                     break
                 else: 
                     j+=1
@@ -127,7 +140,8 @@ def rabinKarpSearch(pat, txt, q):
 
             # if p == t and pat[0...M-1] = txt[i, i+1, ...i+M-1]
             if j==M:
-                print("Pattern found at index " + str(i))
+                print("The index is:",i+j, ". The next character is: \'", txt[i+j], "\' We have found a match.")
+                #print("Pattern found at index " + str(i))
                 isItThere = True
                 indexStarter.append(i)
             rkCount += 1
@@ -174,7 +188,8 @@ def KMPSearch(pat, txt):
         kmpCount += 1    
   
         if j == M:
-            print ("Found pattern at index " + str(i-j))
+            #print ("Found pattern at index " + str(i-j))
+            print("The index is:",i-j+M, ". The next character is: \'", txt[i-j+M], "\' We have found a match.") #M == len(pat)
             indexStarter.append(i-j)
             isItThere = True
             j = lps[j-1]
@@ -240,7 +255,7 @@ def badCharHeuristic(string, size):
  
     # Fill the actual value of last occurrence
     for i in range(size):
-        badChar[ord(string[i])] = i;
+        badChar[ord(string[i])] = i
  
     # retun initialized list
     return badChar
@@ -277,7 +292,8 @@ def BoyerMooreSearch(pat, txt):
         # If the pattern is present at current shift,
         # then index j will become -1 after the above loop
         if j<0:
-            print("Pattern occur at shift = {}".format(s))
+            #print("Pattern occur at shift = {}".format(s))
+            print("The index is:",s+j+m+1, ". The next character is: \'", txt[s+j+m+1], "\' We have found a match.") #m == len(pat)
             isItThere = True
             indexStarter.append(format(s))
             '''   
@@ -308,7 +324,6 @@ def BoyerMooreSearch(pat, txt):
 nTrials = 1
 
 if __name__ == '__main__':
-   # myTable = pd.DataFrame(columns=['Name of Algo', 'Pattern', 'Index Start', 'Avg run time (in ms)', 'Comparisons'])
     txt = readFileToUpper("input1.txt") 
     rowCounter = 0
     for x in range(0, nTrials):
@@ -324,8 +339,8 @@ if __name__ == '__main__':
             rowCounter += 1
             
         
-        print("\n\n Average time for", nTrials, "trials of Naive Algorithm: ", howLongItTakes/nTrials *1000, "ms")
-        print("\n\n Comparisons for Naive's: ", naiveCount/nTrials)
+        #print("\n\n Average time for", nTrials, "trials of Naive Algorithm: ", howLongItTakes/nTrials *1000, "ms")
+        #print("\n\n Comparisons for Naive's: ", naiveCount/nTrials)
         
 
 
@@ -339,8 +354,8 @@ if __name__ == '__main__':
             howLongItTakes += time.time() - startTime
             myTable.loc[rowCounter] = ['Rabin-Karp', index, indexStarter, howLongItTakes*1000, rkCount]
             rowCounter += 1
-        print("\n\n Average time for", nTrials, "trials of Rabin-Karp's Algorithm: ", howLongItTakes/nTrials *1000, "ms")
-        print("\n\n Comparisons for RK's: ", rkCount/nTrials)
+        #print("\n\n Average time for", nTrials, "trials of Rabin-Karp's Algorithm: ", howLongItTakes/nTrials *1000, "ms")
+        #print("\n\n Comparisons for RK's: ", rkCount/nTrials)
 
         howLongItTakes = 0
         print("\n\nThis is the Knuth-Morris-Pratt section\n")
@@ -352,8 +367,8 @@ if __name__ == '__main__':
             howLongItTakes += time.time() - startTime
             myTable.loc[rowCounter] = ['Knuth-Morris-Pratt',index, indexStarter,howLongItTakes*1000, kmpCount]
             rowCounter += 1
-        print("\n\n Average time for", nTrials, "trials of Knuth-Morris-Pratt Algorithm: ", howLongItTakes/nTrials *1000, "ms")
-        print("\n\n Comparisons for KMP's: ", kmpCount/nTrials)
+        #print("\n\n Average time for", nTrials, "trials of Knuth-Morris-Pratt Algorithm: ", howLongItTakes/nTrials *1000, "ms")
+        #print("\n\n Comparisons for KMP's: ", kmpCount/nTrials)
 
         howLongItTakes = 0
         print("\n\nThis is the Boyer-Moore section\n")
@@ -365,8 +380,8 @@ if __name__ == '__main__':
             howLongItTakes += time.time() - startTime
             myTable.loc[rowCounter] = ['Boyer-Moore', index, indexStarter, howLongItTakes*1000, bmCount]
             rowCounter += 1
-        print("\n\n Average time for", nTrials, "trials of Boyer-Moore Algorithm: ", howLongItTakes/nTrials *1000, "ms")
-        print("\n\n Comparisons for BM's: ", bmCount/nTrials)
+        #print("\n\n Average time for", nTrials, "trials of Boyer-Moore Algorithm: ", howLongItTakes/nTrials *1000, "ms")
+        #print("\n\n Comparisons for BM's: ", bmCount/nTrials)
 
         print (myTable)
 
@@ -376,4 +391,8 @@ if __name__ == '__main__':
     ax2 = ax.twinx()
     ax2.set_ylabel("Pattern", color="purple", fontsize=14)
     ax2.plot(myTable['Pattern'], color='purple')
+    #timePlot is for the time
+    timePlot = myTable.plot(kind = 'scatter', x = 'Name of Algo', y = 'Avg run time (in ms)', color = 'blue')
+    
+    #Show the plot
     plt.show()
