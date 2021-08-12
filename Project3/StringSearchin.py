@@ -7,7 +7,6 @@ https://www.geeksforgeeks.org/naive-algorithm-for-pattern-searching/
 https://www.geeksforgeeks.org/rabin-karp-algorithm-for-pattern-searching/
 https://www.geeksforgeeks.org/kmp-algorithm-for-pattern-searching/
 https://www.geeksforgeeks.org/boyer-moore-algorithm-for-pattern-searching/
-https://www.geeksforgeeks.org/boyer-moore-algorithm-for-pattern-searching/
 '''
 
 import numpy as np
@@ -391,8 +390,14 @@ if __name__ == '__main__':
     ax2 = ax.twinx()
     ax2.set_ylabel("Pattern", color="purple", fontsize=14)
     ax2.plot(myTable['Pattern'], color='purple')
+    plt.savefig("myGraph1.png")
+    
     #timePlot is for the time
     timePlot = myTable.plot(kind = 'scatter', x = 'Name of Algo', y = 'Avg run time (in ms)', color = 'blue')
     
+    
+    
+
     #Show the plot
     plt.show()
+   
