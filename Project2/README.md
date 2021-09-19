@@ -1,3 +1,5 @@
+## To view the final project submission, select PrimsKrusk.py
+
 This is the expected table output for the first input.txt given, as well as the updated (I made the vertices start from 0 instead of 1) tree graph.
 
 (Windows Key + shift + s
